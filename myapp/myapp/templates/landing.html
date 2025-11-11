@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phakphum Yimkothak - Landing Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <style>
+    /* Custom animation for floating avatar */
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-900 via-purple-800 to-pink-700 min-h-screen flex items-center justify-center">
+  <div class="max-w-xl w-full mx-auto bg-white bg-opacity-10 rounded-3xl shadow-2xl p-10 text-center backdrop-blur-md border border-white border-opacity-20" x-data="{ show: false }" x-init="setTimeout(() => show = true, 500)">
+    <div class="flex flex-col items-center">
+      <img src="https://ui-avatars.com/api/?name=Phakphum+Yimkothak&background=6D28D9&color=fff&size=128" alt="Phakphum Yimkothak" class="w-32 h-32 rounded-full border-4 border-white shadow-lg float mb-6 transition-transform duration-700" x-bind:class="show ? 'scale-100' : 'scale-0'">
+      <h1 class="text-4xl font-extrabold text-white mb-2 animate-pulse" x-show="show" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">Hi, I'm Phakphum Yimkothak</h1>
+      <h2 class="text-xl text-purple-200 mb-4" x-show="show" x-transition.delay.200ms>3rd Year Student at Ubon</h2>
+      <p class="text-white text-lg mb-6" x-show="show" x-transition.delay.400ms>
+        Welcome to my personal landing page! I'm passionate about technology, coding, and creative design. Explore more about me below.
+      </p>
+      <button class="mt-4 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:scale-105 transform transition-all duration-300 focus:outline-none" 
+        hx-get="/about" hx-target="#about-section" hx-swap="innerHTML" x-show="show" x-transition.delay.600ms>
+        Learn More
+      </button>
+    </div>
+    <div id="about-section" class="mt-8"></div>
+  </div>
+  <!-- htmx endpoint example (for demo, static content) -->
+  <template id="about-template">
+    <div class="bg-white bg-opacity-20 rounded-xl p-6 mt-4 animate-fade-in">
+      <h3 class="text-2xl font-bold text-purple-900 mb-2">About Me</h3>
+      <p class="text-gray-800">I'm Phakphum Yimkothak, a 3rd year student at Ubon. I love building beautiful web experiences and learning new technologies. Let's connect and create something amazing together!</p>
+    </div>
+  </template>
+  <script>
+    // Simple htmx endpoint simulation for demo
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+      if (evt.detail.path === '/about') {
+        evt.preventDefault();
+        setTimeout(() => {
+          const aboutHtml = document.getElementById('about-template').innerHTML;
+          evt.detail.xhr.respondWith(new Response(aboutHtml, { status: 200, headers: { 'Content-Type': 'text/html' } }));
+        }, 500);
+      }
+    });
+  </script>
+</body>
+</html>
